@@ -1,46 +1,64 @@
 package org.example;
 
 import lombok.Getter;
-import org.openqa.selenium.Capabilities;
-import org.openqa.selenium.Cookie;
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.*;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.*;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.safari.SafariOptions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.time.Duration;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 import static java.util.Map.entry;
 
 public class DemoWebDriver extends BaseDriver implements WebAutomationTool {
+
+    private void saveResult(String result, String params) {
+        this.resultQueue.put("step_result",
+                Map.ofEntries(
+                        entry("step", params),
+                        entry("status", result)
+                ));
+    }
     @Override
-    public void open_website(String url) {
-//        this.webDriver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+    public void openWebsite(String url) {
         String params = "";
         try {
-
             this.webDriver.get(url);
-            this.resultQueue.put("step_result",
-                    Map.ofEntries(
-                            entry("step", params),
-                            entry("status", "SUCCESSFUL")
-                    ));
+            this.saveResult("SUCCESSFUL", params);
         } catch (Exception ex) {
-            this.resultQueue.put("step_result",
-                    Map.ofEntries(
-                            entry("step", params),
-                            entry("status", "FAIL")
-                    ));
+            this.saveResult("FAIL", params);
         }
+    }
 
+    @Override
+    public void findElementAndClick(String selector, int waitSeconds) {
+        String params = "";
+        By by;
+        switch (selector){
+            case "xpath":
+                 by = By.xpath("");
+                break;
+            case "css":
+                by = By.cssSelector("");
+                break;
+            case "link_text":
+                by = By.linkText("");
+                break;
+            default:
+                by = By.xpath("");
+        }
+        WebElement element = new WebDriverWait(this.webDriver, Duration.ofSeconds(waitSeconds).toSeconds())
+                .until(ExpectedConditions.elementToBeClickable(by));
+        element.click();
+        this.saveResult("SUCCESSFUL", params);
     }
 
     public void open_new_tab() {
