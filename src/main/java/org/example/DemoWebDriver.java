@@ -43,6 +43,28 @@ public class DemoWebDriver extends BaseDriver implements WebAutomationTool {
 
     }
 
+    public void open_new_tab() {
+        // do open new tab
+        System.out.println("Running open_new_tab function.");
+    }
+
+    public void get_value_to_store() {
+        System.out.println("Running get_value_to_store.");
+    }
+
+    public void get_regex_value_to_store() {
+        System.out.println("Running get_regex_value_to_store.");
+    }
+
+    public void find_element_and_sendkey_from_store() {
+        System.out.println("Running find_element_and_sendkey_from_store.");
+    }
+
+    public void validation() {
+        System.out.println("Running validation");
+    }
+
+
     static class WebDriverBuilder {
         public static WebDriver getWebDriver(String webDriverType, String executablePath, String... browserOptions) {
             WebDriver driver;
