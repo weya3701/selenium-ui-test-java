@@ -5,7 +5,7 @@ public interface WebAutomationTool {
     static final String SUCCESSFUL = "執行成功";
     static final String FAILED = "執行失敗";
 
-    public void openWebsite(String url);
+    public void open_website(Step step);
 
-    public void findElementAndClick(String selector, int waitSeconds);
+    public void find_element_and_click(Step step);
 }
