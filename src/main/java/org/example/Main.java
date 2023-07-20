@@ -1,7 +1,10 @@
 package org.example;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
+// import java.lang.reflect.Modifier;
 
 import org.yaml.snakeyaml.Yaml;
-import org.yaml.snakeyaml.constructor.Constructor;
+// import org.yaml.snakeyaml.constructor.Constructor;
 import org.yaml.snakeyaml.representer.Representer;
 
 import java.io.InputStream;
@@ -9,18 +12,31 @@ import java.io.FileInputStream;
 
 public class Main {
     public static void main(String[] args) {
-        try {
-            Representer represent = new Representer();
-            represent.getPropertyUtils().setSkipMissingProperties(true);
-            Yaml yaml = new Yaml(new Constructor(TestJob.class), represent);
-            InputStream inputStream =new FileInputStream("/Users/arthuryueh/Downloads/validation_demo.yaml");
-            TestJob testJob = yaml.load(inputStream);
-            System.out.println(testJob);
+        Class c = DemoWebDriver.class;
 
-//            new DemoWebDriver("Chrome", "/Users/arthuryueh/Downloads/chromedriver_mac_arm64/chromedriver").openWebsite("https://www.google.com/");
-//            Thread.sleep(5000);
-        } catch (Exception ex) {
-            System.out.println(ex.toString());
-        }
+        Constructor con = c.getDeclaredConstructors()[0];
+
+        TaskRunner tr = new TaskRunner(
+                "open_new_tab",
+                "get_value_to_store",
+                "get_regex_value_to_store",
+                "find_element_and_sendkey_from_store",
+                "validation",
+                "get_value_to_store"
+        );
+
+        // try {
+        //     // System.out.println("Hello world!");
+        //     // DemoWebDriver wb = new DemoWebDriver("Chrome", "/Users/mirage/Desktop/chromedriver");
+        //     Object wb = con.newInstance("Chrome", "/Users/mirage/Desktop/chromedriver");
+        //     Method method = c.getMethod("open_website", String.class);
+        //     method.invoke(wb, "https://www.google.com/");
+        //     method = c.getMethod("validation");
+        //     method.invoke(wb);
+            // wb.open_website("https://www.google.com/");
+        //     Thread.sleep(5000);
+        // } catch (Exception ex) {
+        //     System.out.println(ex.toString());
+        // }
     }
 }
