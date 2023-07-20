@@ -12,7 +12,7 @@ public class Step {
     String by;
     String pattern;
     String result;
-    String tab;
+    Integer tab;
     String frame;
     String key;
     String fileName;
