@@ -3,7 +3,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 
 public class TaskRunner {
-    public TaskRunner(String ...steps) {
+    public TaskRunner(Step[] steps) {
 
         Class c = DemoWebDriver.class;
 
@@ -12,12 +12,12 @@ public class TaskRunner {
         // 取得Webdriver運行實體
         try {
             Object wb = con.newInstance("Chrome", "/Users/mirage/Desktop/chromedriver");
-
-            for (String step: steps) {
+            // Object wb = con.newInstance(wdDriver, wdPath);
+            for (Step step: steps) {
                 // 取得物件方法
-                Method method = c.getMethod(step);
+                Method method = c.getMethod(step.module, Step.class);
                 // 執行方法
-                method.invoke(wb);
+                method.invoke(wb, step);
             }
         } catch (Exception ex) {
             System.out.println(ex.toString());
