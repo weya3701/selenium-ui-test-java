@@ -8,12 +8,9 @@ public class TestJob {
     String job;
     String description;
     String testCaseDescription;
-    String testCaseId;
-    String webDriverType;
-    String webDriverPath;
-    Boolean screenshot;
-    String[] Options;
+    String testCaseID;
+    String webdriverType;
+    String webdriverPath;
+    String screenshot;
     Step[] steps;
 }
-
-
