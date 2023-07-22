@@ -63,7 +63,6 @@ public class DemoWebDriver extends BaseDriver implements WebAutomationTool {
     }
 
     public void switch_tab(Step step) {
-        System.out.println("Running switch_tab function.");
 
         Set<String> wdtabs = new TreeSet<>();
 
@@ -75,7 +74,6 @@ public class DemoWebDriver extends BaseDriver implements WebAutomationTool {
 
     @Override
     public void open_website(Step step) {
-        System.out.println("Running open_website");
         this.webDriver.get(step.url);
         try {
             TimeUnit.SECONDS.sleep(step.interval);
@@ -86,7 +84,6 @@ public class DemoWebDriver extends BaseDriver implements WebAutomationTool {
 
     public void open_new_tab(Step step) {
 
-        System.out.println("Running open_new_tab function.");
         JavascriptExecutor executor = (JavascriptExecutor) this.webDriver;
         executor.executeScript("window.open('');");
 
@@ -99,7 +96,6 @@ public class DemoWebDriver extends BaseDriver implements WebAutomationTool {
 
     @Override
     public void find_element_and_click(Step step) {
-        System.out.println("Running find_element_and_click");
         try {
             By by = getElementBy(step.elementName, step.by);
             WebElement element = new WebDriverWait(this.webDriver, Duration.ofSeconds(30).toSeconds())
@@ -116,7 +112,6 @@ public class DemoWebDriver extends BaseDriver implements WebAutomationTool {
     }
 
     public void find_element_and_click_without_wait(Step step) {
-        System.out.println("Running find_element_and_click_without_wait");
         try {
             By by = getElementBy(step.elementName, step.by);
             this.webDriver.findElement(by).click();
@@ -131,7 +126,6 @@ public class DemoWebDriver extends BaseDriver implements WebAutomationTool {
     }
 
     public void find_element_and_sendkey(Step step) {
-        System.out.println("Running find_element_and_sendkey");
 
         try {
             // Do find_element_and_sendkey
