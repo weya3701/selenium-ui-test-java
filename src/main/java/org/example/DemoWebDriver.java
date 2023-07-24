@@ -77,6 +77,7 @@ public class DemoWebDriver extends BaseDriver implements WebAutomationTool {
         this.webDriver.get(step.url);
         try {
             TimeUnit.SECONDS.sleep(step.interval);
+            saveResult()
         } catch (Exception ex) {
             System.out.println(ex);
         }
@@ -111,7 +112,8 @@ public class DemoWebDriver extends BaseDriver implements WebAutomationTool {
         }
     }
 
-    public void find_element_and_click_without_wait(Step step) {
+    @Override
+    public void open_element_and_click_without_wait(Step step) {
         try {
             By by = getElementBy(step.elementName, step.by);
             this.webDriver.findElement(by).click();
@@ -125,6 +127,7 @@ public class DemoWebDriver extends BaseDriver implements WebAutomationTool {
         }
     }
 
+    @Override
     public void find_element_and_sendkey(Step step) {
 
         try {
@@ -143,6 +146,7 @@ public class DemoWebDriver extends BaseDriver implements WebAutomationTool {
         }
     }
 
+    @Override
     public void switch_frame(Step step) {
         try {
             if (step.frame == "parent") {
@@ -155,19 +159,69 @@ public class DemoWebDriver extends BaseDriver implements WebAutomationTool {
         }
     }
 
+    @Override
     public void get_value_to_store(Step step) {
         System.out.println(step);
         System.out.println("Running get_value_to_store.");
+        String store_key = step.storeKey;
+        By selectType = getElementBy(step.elementName, step.by);
+        String element_value = "";
+        HashMap<String, String> storeValue = new HashMap<>();
+
+        try {
+            element_value = this.webDriver.findElement(
+                    selectType
+            ).getText();
+            storeValue.put("key", element_value);
+        } catch(Exception ex) {
+            System.out.println(ex);
+        }
+        this.resultQueue.put(store_key, storeValue);
     }
 
     public void get_regex_value_to_store(Step step) {
         System.out.println(step);
         System.out.println("Running get_regex_value_to_store.");
+        HashMap<String, String> storeValue = new HashMap<>();
+        String element_value = "";
+        Pattern pattern = Pattern.compile(step.pattern);
+        String html = this.webDriver.getPageSource();
+
+        try {
+            Matcher matcher = pattern.matcher(html);
+            boolean isMatch = matcher.matches();
+            if (isMatch) {
+                element_value = matcher.group();
+                storeValue.put("key", element_value)
+            }
+        } catch(Exception ex) {
+            System.out.println(ex);
+        }
     }
 
     public void find_element_and_sendkey_from_store(Step step) {
         System.out.println(step);
         System.out.println("Running find_element_and_sendkey_from_store.");
+        String store_key = step.storeKey;
+        System.out.println("store_key: "+store_key);
+        System.out.println(this.resultQueue);
+        HashMap<String, String> storeValue = new HashMap<>();
+        storeValue = (HashMap<String, String>) this.resultQueue.get(store_key);
+        System.out.println(storeValue);
+        try {
+            // Do find_element_and_sendkey
+            By by = getElementBy(step.elementName, step.by);
+            WebElement element = new WebDriverWait(this.webDriver, Duration.ofSeconds(30).toSeconds())
+                    .until(ExpectedConditions.elementToBeClickable(by));
+            element.sendKeys(storeValue.get("key"));
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+        try {
+            TimeUnit.SECONDS.sleep(step.interval);
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
     }
 
     public void validation_count(Step step) {
@@ -181,7 +235,6 @@ public class DemoWebDriver extends BaseDriver implements WebAutomationTool {
 
         }
     }
-
 
     static class WebDriverBuilder {
         public static WebDriver getWebDriver(String webDriverType, String executablePath, String... browserOptions) {
