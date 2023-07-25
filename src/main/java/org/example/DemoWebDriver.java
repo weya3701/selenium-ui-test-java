@@ -77,7 +77,7 @@ public class DemoWebDriver extends BaseDriver implements WebAutomationTool {
         this.webDriver.get(step.url);
         try {
             TimeUnit.SECONDS.sleep(step.interval);
-            saveResult()
+            // saveResult();
         } catch (Exception ex) {
             System.out.println(ex);
         }
@@ -192,7 +192,7 @@ public class DemoWebDriver extends BaseDriver implements WebAutomationTool {
             boolean isMatch = matcher.matches();
             if (isMatch) {
                 element_value = matcher.group();
-                storeValue.put("key", element_value)
+                storeValue.put("key", element_value);
             }
         } catch(Exception ex) {
             System.out.println(ex);
@@ -203,11 +203,8 @@ public class DemoWebDriver extends BaseDriver implements WebAutomationTool {
         System.out.println(step);
         System.out.println("Running find_element_and_sendkey_from_store.");
         String store_key = step.storeKey;
-        System.out.println("store_key: "+store_key);
-        System.out.println(this.resultQueue);
         HashMap<String, String> storeValue = new HashMap<>();
         storeValue = (HashMap<String, String>) this.resultQueue.get(store_key);
-        System.out.println(storeValue);
         try {
             // Do find_element_and_sendkey
             By by = getElementBy(step.elementName, step.by);
@@ -227,12 +224,24 @@ public class DemoWebDriver extends BaseDriver implements WebAutomationTool {
     public void validation_count(Step step) {
         System.out.println("Running validation");
         Pattern pattern = Pattern.compile(step.pattern);
-        String demo_str = "<td>12345</td><td>88888</td><td>72222</td><td>28346</td>";
-        Matcher matcher = pattern.matcher(demo_str);
-        while (matcher.find()) {
+        Integer total = 0;
+        HashMap<String, Integer> resultPattern = new HashMap<>();
 
+        String html = this.webDriver.getPageSource();
+
+        // String demo_str = "<td>88888</td><td>12345</td><td>88888</td><td>72222</td><td>28346</td>";
+        Matcher matcher = pattern.matcher(html);
+        while (matcher.find()) {
+            resultPattern.put(matcher.group(1), 0);
+            total = total + 1;
             System.out.println("matcher.group():\t"+matcher.group(1));
 
+        }
+
+        if (resultPattern.size() == total) {
+            System.out.println("Successful.");
+        } else {
+            System.out.println("Failed.");
         }
     }
 
