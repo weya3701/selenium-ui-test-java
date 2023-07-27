@@ -22,6 +22,7 @@ import java.util.Set;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.function.Function;
 
 import static java.util.Map.entry;
 
@@ -99,8 +100,9 @@ public class DemoWebDriver extends BaseDriver implements WebAutomationTool {
     public void find_element_and_click(Step step) {
         try {
             By by = getElementBy(step.elementName, step.by);
+            Function<WebDriver, WebElement> condition = (WebDriver d) -> d.findElement(by);
             WebElement element = new WebDriverWait(this.webDriver, Duration.ofSeconds(30).toSeconds())
-                    .until(ExpectedConditions.elementToBeClickable(by));
+                    .until(condition);
             element.click();
         } catch (Exception ex) {
             System.out.println(ex);
@@ -133,8 +135,9 @@ public class DemoWebDriver extends BaseDriver implements WebAutomationTool {
         try {
             // Do find_element_and_sendkey
             By by = getElementBy(step.elementName, step.by);
+            Function<WebDriver, WebElement> condition = (WebDriver d) -> d.findElement(by);
             WebElement element = new WebDriverWait(this.webDriver, Duration.ofSeconds(30).toSeconds())
-                    .until(ExpectedConditions.elementToBeClickable(by));
+                    .until(condition);
             element.sendKeys(step.key);
         } catch (Exception ex) {
             System.out.println(ex);
@@ -208,8 +211,9 @@ public class DemoWebDriver extends BaseDriver implements WebAutomationTool {
         try {
             // Do find_element_and_sendkey
             By by = getElementBy(step.elementName, step.by);
+            Function<WebDriver, WebElement> condition = (WebDriver d) -> d.findElement(by);
             WebElement element = new WebDriverWait(this.webDriver, Duration.ofSeconds(30).toSeconds())
-                    .until(ExpectedConditions.elementToBeClickable(by));
+                    .until(condition);
             element.sendKeys(storeValue.get("key"));
         } catch (Exception ex) {
             System.out.println(ex);
