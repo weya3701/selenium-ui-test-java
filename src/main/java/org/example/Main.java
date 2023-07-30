@@ -16,7 +16,9 @@ public class Main {
 
         Constructor con = c.getDeclaredConstructors()[0];
 
-        TaskParser tp = new TaskParser("/Users/mirage/Desktop/yuantaDemo.yaml");
+        System.out.println(args[0]);
+        // TaskParser tp = new TaskParser("/Users/mirage/Desktop/yuantaDemo.yaml");
+        TaskParser tp = new TaskParser(args[0]);
         TestJob tj = tp.getTestJob();
         new TaskRunner(tj.steps);
     }
