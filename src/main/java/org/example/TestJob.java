@@ -12,5 +12,6 @@ public class TestJob {
     String webdriverType;
     String webdriverPath;
     String screenshot;
+    String[] options;
     Step[] steps;
 }

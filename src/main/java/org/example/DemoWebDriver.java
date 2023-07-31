@@ -9,7 +9,6 @@ import org.openqa.selenium.firefox.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.safari.SafariOptions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.concurrent.TimeUnit;
@@ -250,7 +249,7 @@ public class DemoWebDriver extends BaseDriver implements WebAutomationTool {
     }
 
     static class WebDriverBuilder {
-        public static WebDriver getWebDriver(String webDriverType, String executablePath, String... browserOptions) {
+        public static WebDriver getWebDriver(String webDriverType, String executablePath, String[] browserOptions) {
             WebDriver driver;
             switch (webDriverType) {
                 case "Chrome":
@@ -287,9 +286,9 @@ public class DemoWebDriver extends BaseDriver implements WebAutomationTool {
     @Getter
     private Actions actions;
 
-    public DemoWebDriver(String webDriverType, String executablePath) {
+    public DemoWebDriver(String webDriverType, String executablePath, String[] browserOptions) {
         resultQueue = new HashMap<>();
-        webDriver = WebDriverBuilder.getWebDriver(webDriverType, executablePath);
+        webDriver = WebDriverBuilder.getWebDriver(webDriverType, executablePath, browserOptions);
         actions = new Actions(webDriver);
     }
 }
