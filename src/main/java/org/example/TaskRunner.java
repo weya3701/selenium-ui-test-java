@@ -14,6 +14,9 @@ public class TaskRunner {
             for (Step step: Arrays.stream(testJob.steps).toList()) {
                 Method method = c.getMethod(step.module, step.getClass());
                 method.invoke(wb, step);
+                System.out.println(step.desc);
+                method = c.getMethod("getScreenshot", step.getClass());
+                method.invoke(wb, step);
             }
         } catch (Exception ex) {
             ex.printStackTrace();
