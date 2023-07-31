@@ -43,7 +43,7 @@ public class TaskParser {
       TestJob testJob = yaml.loadAs(yamlOutput, TestJob.class);
       this.testJob = testJob;
     } catch (Exception ex) {
-      System.out.println(ex.toString());
+      ex.printStackTrace();
     }
   }
 
