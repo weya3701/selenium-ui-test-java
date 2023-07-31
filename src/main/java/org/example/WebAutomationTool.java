@@ -12,11 +12,13 @@ public interface WebAutomationTool {
 
   public void open_new_tab(Step step);
 
-  public void open_element_and_click_without_wait(Step step);
+  public void find_element_and_click_without_wait(Step step);
 
   public void find_element_and_sendkey(Step step);
 
   public void find_element_and_sendkey_from_store(Step step);
+
+  public void find_element_and_sendkey_by_js(Step step);
 
   public void switch_frame(Step step);
 
@@ -25,4 +27,10 @@ public interface WebAutomationTool {
   public void get_regex_value_to_store(Step step);
 
   public void validation_count(Step step);
+
+  public void scroll_element_intoview(Step step);
+
+  public void validation(Step step);
+
+  public void find_element_and_hover(Step step);src/main/java/org/example/WebAutomationTool.java
 }

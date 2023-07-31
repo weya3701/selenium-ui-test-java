@@ -10,33 +10,50 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.safari.SafariOptions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
+import org.openqa.selenium.JavascriptExecutor;
 import java.util.concurrent.TimeUnit;
-import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeSet;
 import java.util.Set;
-
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.function.Function;
-
 import static java.util.Map.entry;
+import java.time.Duration;
+
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
+
+import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class DemoWebDriver extends BaseDriver implements WebAutomationTool {
 
-
-    public void webdriver_demo(Step step) {
-        System.out.println("Running webdriver_demo function");
-    }
     private void saveResult(String result, String params) {
         this.resultQueue.put("step_result",
                 Map.ofEntries(
                         entry("step", params),
                         entry("status", result)
                 ));
+    }
+
+    public void getScreenshot(Step step) {
+
+        String filePath = String.format("pic/%s.png", step.getDesc());
+        File screenshotFile = ((TakesScreenshot) this.webDriver).getScreenshotAs(OutputType.FILE);
+        Path destinationPath = Paths.get(filePath);
+
+        screenshotFile.renameTo(destinationPath.toFile());
+    }
+
+    private void setSecondsSleep(int n) {
+        try {
+            TimeUnit.SECONDS.sleep(n);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     private By getElementBy(String elementName, String selector) {
@@ -57,8 +74,10 @@ public class DemoWebDriver extends BaseDriver implements WebAutomationTool {
             case "tag_name":
                 by = By.name(elementName);
                 break;
+            default:
+                by = By.xpath(elementName);
+                break;
         }
-
         return by;
     }
 
@@ -75,24 +94,14 @@ public class DemoWebDriver extends BaseDriver implements WebAutomationTool {
     @Override
     public void open_website(Step step) {
         this.webDriver.get(step.url);
-        try {
-            TimeUnit.SECONDS.sleep(step.interval);
-            // saveResult();
-        } catch (Exception ex) {
-            System.out.println(ex);
-        }
+        setSecondsSleep(step.interval);
     }
 
     public void open_new_tab(Step step) {
 
         JavascriptExecutor executor = (JavascriptExecutor) this.webDriver;
         executor.executeScript("window.open('');");
-
-        try {
-            TimeUnit.SECONDS.sleep(step.interval);
-        } catch (Exception ex) {
-            System.out.println(ex);
-        }
+        setSecondsSleep(step.interval);
     }
 
     @Override
@@ -103,26 +112,18 @@ public class DemoWebDriver extends BaseDriver implements WebAutomationTool {
             WebElement element = new WebDriverWait(this.webDriver, Duration.ofSeconds(30).toSeconds())
                     .until(condition);
             element.click();
-        } catch (Exception ex) {
-            System.out.println(ex);
-        }
-        try {
-            TimeUnit.SECONDS.sleep(step.interval);
+            setSecondsSleep(step.interval);
         } catch (Exception ex) {
             System.out.println(ex);
         }
     }
 
     @Override
-    public void open_element_and_click_without_wait(Step step) {
+    public void find_element_and_click_without_wait(Step step) {
         try {
             By by = getElementBy(step.elementName, step.by);
             this.webDriver.findElement(by).click();
-        } catch (Exception ex) {
-            System.out.println(ex);
-        }
-        try {
-            TimeUnit.SECONDS.sleep(step.interval);
+            setSecondsSleep(step.interval);
         } catch (Exception ex) {
             System.out.println(ex);
         }
@@ -138,14 +139,50 @@ public class DemoWebDriver extends BaseDriver implements WebAutomationTool {
             WebElement element = new WebDriverWait(this.webDriver, Duration.ofSeconds(30).toSeconds())
                     .until(condition);
             element.sendKeys(step.key);
+            setSecondsSleep(step.interval);
         } catch (Exception ex) {
             System.out.println(ex);
         }
-        try {
-            TimeUnit.SECONDS.sleep(step.interval);
-        } catch (Exception ex) {
-            System.out.println(ex);
-        }
+    }
+
+    @Override
+    public void find_element_and_sendkey_by_js(Step step) {
+        String script = String.format(
+            """
+            ele = document.evaluate(
+                '%s',
+                document,
+                null,
+                XPathResult.FIRST_ORDERED_NODE_TYPE,
+                null
+            ).singleNodeValue;
+            ele.value='%s'
+            """, step.elementName, step.key
+        );
+        script.replaceAll("'", "\"");
+        script.replaceAll("\"", "'");
+        JavascriptExecutor executor = (JavascriptExecutor) this.webDriver;
+        executor.executeScript(script);
+    }
+
+    @Override
+    public void scroll_element_intoview(Step step) {
+        String script = String.format(
+            """
+            ele = document.evaluate(
+                '%s',
+                document,
+                null,
+                XPathResult.FIRST_ORDERED_NODE_TYPE,
+                null
+            ).singleNodeValue;
+            ele.scrollIntoView();
+            """, step.elementName
+        );
+        script.replaceAll("'", "\"");
+        script.replaceAll("\"", "'");
+        JavascriptExecutor executor = (JavascriptExecutor) this.webDriver;
+        executor.executeScript(script);
     }
 
     @Override
@@ -163,8 +200,7 @@ public class DemoWebDriver extends BaseDriver implements WebAutomationTool {
 
     @Override
     public void get_value_to_store(Step step) {
-        System.out.println(step);
-        System.out.println("Running get_value_to_store.");
+
         String store_key = step.storeKey;
         By selectType = getElementBy(step.elementName, step.by);
         String element_value = "";
@@ -176,14 +212,34 @@ public class DemoWebDriver extends BaseDriver implements WebAutomationTool {
             ).getText();
             storeValue.put("key", element_value);
         } catch(Exception ex) {
-            System.out.println(ex);
+            ex.printStackTrace();
         }
         this.resultQueue.put(store_key, storeValue);
     }
 
+    @Override
+    public void validation(Step step) {
+        String result = step.result;
+        By selectType = getElementBy(step.elementName, step.by);
+        String element_value = "";
+
+        try {
+            element_value = this.webDriver.findElement(
+                    selectType
+            ).getText();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        boolean isEqual = element_value.equalsIgnoreCase(result);
+        if (isEqual) {
+            System.out.println("The value is correct.");
+        } else {
+            System.out.println("The value is incorrect");
+        }
+    }
+
     public void get_regex_value_to_store(Step step) {
-        System.out.println(step);
-        System.out.println("Running get_regex_value_to_store.");
         HashMap<String, String> storeValue = new HashMap<>();
         String element_value = "";
         Pattern pattern = Pattern.compile(step.pattern);
@@ -197,42 +253,35 @@ public class DemoWebDriver extends BaseDriver implements WebAutomationTool {
                 storeValue.put("key", element_value);
             }
         } catch(Exception ex) {
-            System.out.println(ex);
+            ex.printStackTrace();
         }
     }
 
     public void find_element_and_sendkey_from_store(Step step) {
-        System.out.println(step);
-        System.out.println("Running find_element_and_sendkey_from_store.");
+
         String store_key = step.storeKey;
         HashMap<String, String> storeValue = new HashMap<>();
         storeValue = (HashMap<String, String>) this.resultQueue.get(store_key);
         try {
-            // Do find_element_and_sendkey
+
             By by = getElementBy(step.elementName, step.by);
             Function<WebDriver, WebElement> condition = (WebDriver d) -> d.findElement(by);
             WebElement element = new WebDriverWait(this.webDriver, Duration.ofSeconds(30).toSeconds())
                     .until(condition);
             element.sendKeys(storeValue.get("key"));
+            setSecondsSleep(step.interval);
         } catch (Exception ex) {
-            System.out.println(ex);
-        }
-        try {
-            TimeUnit.SECONDS.sleep(step.interval);
-        } catch (Exception ex) {
-            System.out.println(ex);
+            ex.printStackTrace();
         }
     }
 
     public void validation_count(Step step) {
-        System.out.println("Running validation");
+
         Pattern pattern = Pattern.compile(step.pattern);
         Integer total = 0;
         HashMap<String, Integer> resultPattern = new HashMap<>();
-
         String html = this.webDriver.getPageSource();
 
-        // String demo_str = "<td>88888</td><td>12345</td><td>88888</td><td>72222</td><td>28346</td>";
         Matcher matcher = pattern.matcher(html);
         while (matcher.find()) {
             resultPattern.put(matcher.group(1), 0);
@@ -245,6 +294,19 @@ public class DemoWebDriver extends BaseDriver implements WebAutomationTool {
             System.out.println("Successful.");
         } else {
             System.out.println("Failed.");
+        }
+    }
+
+    public void find_element_and_hover(Step step) {
+        By selectBy = getElementBy(step.elementName, step.by);
+        try {
+            this.actions.moveToElement(
+                    this.webDriver.findElement(
+                            selectBy
+                    )
+            ).perform();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
