@@ -114,7 +114,7 @@ public class DemoWebDriver extends BaseDriver implements WebAutomationTool {
             element.click();
             setSecondsSleep(step.interval);
         } catch (Exception ex) {
-            System.out.println(ex);
+            ex.printStackTrace();
         }
     }
 
@@ -125,7 +125,7 @@ public class DemoWebDriver extends BaseDriver implements WebAutomationTool {
             this.webDriver.findElement(by).click();
             setSecondsSleep(step.interval);
         } catch (Exception ex) {
-            System.out.println(ex);
+            ex.printStackTrace();
         }
     }
 
@@ -141,7 +141,7 @@ public class DemoWebDriver extends BaseDriver implements WebAutomationTool {
             element.sendKeys(step.key);
             setSecondsSleep(step.interval);
         } catch (Exception ex) {
-            System.out.println(ex);
+            ex.printStackTrace();
         }
     }
 
@@ -194,7 +194,7 @@ public class DemoWebDriver extends BaseDriver implements WebAutomationTool {
                 this.webDriver.switchTo().frame(step.frame);
             }
         } catch (Exception ex) {
-            System.out.println(ex);
+            ex.printStackTrace();
         }
     }
 
