@@ -188,7 +188,8 @@ public class DemoWebDriver extends BaseDriver implements WebAutomationTool {
     @Override
     public void switch_frame(Step step) {
         try {
-            if (step.frame == "parent") {
+            boolean isEqual = step.frame.equalsIgnoreCase("parent");
+            if (isEqual) {
                 this.webDriver.switchTo().parentFrame();
             } else {
                 this.webDriver.switchTo().frame(step.frame);
