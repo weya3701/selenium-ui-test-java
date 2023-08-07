@@ -8,6 +8,7 @@ node_modules/
 dist/
 target/
 pic/
+report/
 
 # Compiled Java class files
 *.class
