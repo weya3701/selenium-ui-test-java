@@ -56,9 +56,9 @@ public class DemoWebDriver extends BaseDriver implements WebAutomationTool {
         this.taskStepStatus = this.taskStepStatus && status;
     }
 
-    public void getScreenshot(Step step) {
+    public void getScreenshot(String fp, Step step) {
 
-        String filePath = String.format("pic/%s.png", step.getDesc());
+        String filePath = String.format(fp+"%s.png", step.getDesc());
         File screenshotFile = ((TakesScreenshot) this.webDriver).getScreenshotAs(OutputType.FILE);
         Path destinationPath = Paths.get(filePath);
 
@@ -407,6 +407,10 @@ public class DemoWebDriver extends BaseDriver implements WebAutomationTool {
         }
 
         return rsp;
+    }
+
+    public void close_webdriver() {
+        this.webDriver.close();
     }
 
     static class WebDriverBuilder {
