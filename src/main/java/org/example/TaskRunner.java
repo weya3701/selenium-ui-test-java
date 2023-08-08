@@ -34,8 +34,8 @@ public class TaskRunner {
                 webdriver_status = (String) taskMethod.invoke(wb, step);
                 Method saveMethod = c.getMethod("saveResult", String.class, String.class);
                 saveMethod.invoke(wb, step.desc, webdriver_status);
-                Method screenshotMethod = c.getMethod("getScreenshot", step.getClass());
-                screenshotMethod.invoke(wb, step);
+                Method screenshotMethod = c.getMethod("getScreenshot", String.class, step.getClass());
+                screenshotMethod.invoke(wb, testJob.picPath, step);
             }
             Method resultMethod = c.getMethod("getResult");
             Method statusMethod = c.getMethod("getTaskStatus");
