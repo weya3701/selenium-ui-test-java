@@ -315,6 +315,7 @@ public class DemoWebDriver extends BaseDriver implements WebAutomationTool {
         return rsp;
     }
 
+    @Override
     public String get_regex_value_to_store(Step step) {
         String rsp = this.successful;
         HashMap<String, String> storeValue = new HashMap<>();
@@ -339,6 +340,7 @@ public class DemoWebDriver extends BaseDriver implements WebAutomationTool {
         return rsp;
     }
 
+    @Override
     public String find_element_and_sendkey_from_store(Step step) {
         String rsp = this.successful;
         String store_key = step.storeKey;
@@ -362,6 +364,7 @@ public class DemoWebDriver extends BaseDriver implements WebAutomationTool {
         return rsp;
     }
 
+    @Override
     public String validation_count(Step step) {
 
         String rsp = this.successful;
@@ -390,6 +393,7 @@ public class DemoWebDriver extends BaseDriver implements WebAutomationTool {
         return rsp;
     }
 
+    @Override
     public String find_element_and_hover(Step step) {
         String rsp = this.successful;
         By selectBy = getElementBy(step.elementName, step.by);
@@ -409,8 +413,12 @@ public class DemoWebDriver extends BaseDriver implements WebAutomationTool {
         return rsp;
     }
 
-    public void close_webdriver() {
-        this.webDriver.close();
+    public void closeWebdriver() {
+        try {
+            this.webDriver.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     static class WebDriverBuilder {
