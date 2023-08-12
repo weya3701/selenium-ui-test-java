@@ -59,7 +59,9 @@ public class TaskRunner {
             markdown.setContent("```");
             markdown.setContent("* * *");
             markdown.setContent("結果:", status);
-            ReportWriter("report/taskReport.md", markdown.getMarkdownContent());
+            ReportWriter(
+                    testJob.reportFilePath+testJob.reportFile,
+                    markdown.getMarkdownContent());
 
         } catch (Exception ex) {
             ex.printStackTrace();
