@@ -7,6 +7,7 @@ webdriverPath: "/Users/mirage/Desktop/chromedriver"
 screenshot: "Enable"
 picPath: "pic/"
 reportFilePath: "report/DemoTestCase.md"
+reportFile: "DemoTestCase.md"
 options:
   - --headless
   - --disable-gpu
