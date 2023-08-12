@@ -16,12 +16,12 @@ public class MarkdownDocument {
     }
 
     public void setContent(String... content) {
-        String tmp = "";
+        StringBuilder tmp = new StringBuilder();
         for (String s: content) {
-            tmp += s;
+            tmp.append(s);
         }
-        tmp += "\n";
-        this.stringList.add(tmp);
+        tmp.append("\n");
+        this.stringList.add(tmp.toString());
     }
 
     public String getMarkdownContent() {
