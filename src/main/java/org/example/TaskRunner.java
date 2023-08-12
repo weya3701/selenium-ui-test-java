@@ -1,5 +1,4 @@
 package org.example;
-import lombok.Getter;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
@@ -39,6 +38,8 @@ public class TaskRunner {
             }
             Method resultMethod = c.getMethod("getResult");
             Method statusMethod = c.getMethod("getTaskStatus");
+            Method closeMethod = c.getMethod("closeWebdriver");
+            closeMethod.invoke(wb);
             List<HashMap<String, String>> result = (List<HashMap<String, String>>) resultMethod.invoke(wb);
             String status = (String) statusMethod.invoke(wb);
             report = "##"+testJob.job+"\n";
@@ -50,8 +51,8 @@ public class TaskRunner {
             report += "\n";
             report += "* * * "+"\n";
             report += "\n";
-            report += "### 測試步驟結果"+"\n";
-            report += "```"+"\n";
+                report += "### 測試步驟結果"+"\n";
+                report += "```"+"\n";
 
             for (HashMap<String, String> r: result) {
                 report += "* 步驟："+r.get("Step")+" --> 結果："+r.get("Status")+"\n";
