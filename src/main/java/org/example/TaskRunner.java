@@ -42,26 +42,25 @@ public class TaskRunner {
             closeMethod.invoke(wb);
             List<HashMap<String, String>> result = (List<HashMap<String, String>>) resultMethod.invoke(wb);
             String status = (String) statusMethod.invoke(wb);
-            report = "##"+testJob.job+"\n";
-            report += "### 測試案例資訊"+"\n";
-            report += "* 測試案例描述："+testJob.description+"\n";
-            report += "* 測試案例步驟描述："+testJob.testCaseDescription+"\n";
-            report += "* 瀏覽器類型："+testJob.webdriverType+"\n";
-            report += "* 是否啟用畫面擷圖："+testJob.screenshot+"\n";
-            report += "\n";
-            report += "* * * "+"\n";
-            report += "\n";
-                report += "### 測試步驟結果"+"\n";
-                report += "```"+"\n";
+            MarkdownDocument markdown = new MarkdownDocument();
+            markdown.setContent("##", testJob.job);
+            markdown.setContent("### 測試案例資訊");
+            markdown.setContent("* 測試案例描述:", testJob.description);
+            markdown.setContent("* 測試案例步驟描述:", testJob.testCaseDescription);
+            markdown.setContent("* 瀏覽器類型:", testJob.webdriverType);
+            markdown.setContent("\n");
+            markdown.setContent("* * *");
+            markdown.setContent("### 測試止驟結果");
+            markdown.setContent("```");
 
             for (HashMap<String, String> r: result) {
-                report += "* 步驟："+r.get("Step")+" --> 結果："+r.get("Status")+"\n";
+                markdown.setContent("* 步驟:", r.get("Step"), " ---> ", "結果:", r.get("Status"));
             }
+            markdown.setContent("```");
+            markdown.setContent("* * *");
+            markdown.setContent("結果:", status);
+            ReportWriter("report/taskReport.md", markdown.getMarkdownContent());
 
-            report += "```"+"\n";
-            report += "* * * "+"\n";
-            report += "執行結果："+status+"\n";
-            ReportWriter("report/taskReport.md", report);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
