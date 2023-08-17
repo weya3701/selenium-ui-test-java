@@ -64,6 +64,9 @@
 * get\_value\_to\_store: 取得元素值並儲存在暫存空間
     * 使用參數： store\_key, element\_name
 
+* get\_regex\_value\_to\_store: 透過正規表示式取得資料並儲存在暫存空間
+    * 使用參數： pattern, store_key
+
 * find\_element\_and\_sendkey\_from\_store: 找到搜尋框用暫存元素值作為查詢字詞
     * 使用參數： element\_name, desc, interval, by, store\_key 
 
@@ -71,13 +74,23 @@
     * 使用參數：key, element_name 
 
 * validation: 驗證預期資料是否符合
-    * 使用參數： pattern, result
+    * 使用參數： elementName, result
     * 參數說明：
-         * pattern: 預期資料pattern, 主要使用python正規表示式。
+         * elementName: 預期資料elementName, 主要使用python正規表示式。
          * result: 預期結果資料 
+
+* validation_count: 驗證資料數量是否一致或有重複
+    * 使用參數： pattern
 
 * switch\_tab: 切換頁籤
     * 使用參數： tab
+
+* switch\_frame: 切換iFrame
+    * 使用參數： frame
+    * 參數說明：
+        * iFrame名稱
+
+*
 
 ### 注意事項：
 
