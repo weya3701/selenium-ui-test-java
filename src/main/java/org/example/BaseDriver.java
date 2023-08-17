@@ -12,6 +12,8 @@ abstract class BaseDriver {
     String failed = "執行失敗";
 
     BaseDriver() {
+
         stepsResult = new ArrayList<HashMap<String, String>>();
+        resultQueue = new HashMap<String, HashMap<String, String>>();
     }
 }

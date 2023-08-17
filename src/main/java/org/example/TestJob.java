@@ -14,6 +14,7 @@ public class TestJob {
     String screenshot;
     String picPath;
     String reportFilePath;
+    String reportFile;
     String[] options;
     Step[] steps;
 }
