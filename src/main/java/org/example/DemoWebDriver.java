@@ -318,6 +318,7 @@ public class DemoWebDriver extends BaseDriver implements WebAutomationTool {
     @Override
     public String get_regex_value_to_store(Step step) {
         String rsp = this.successful;
+        String store_key = step.storeKey;
         HashMap<String, String> storeValue = new HashMap<>();
         String element_value = "";
         Pattern pattern = Pattern.compile(step.pattern);
@@ -336,7 +337,7 @@ public class DemoWebDriver extends BaseDriver implements WebAutomationTool {
             rsp = this.failed;
             setTaskStepStatus(false);
         }
-
+        this.resultQueue.put(store_key, storeValue);
         return rsp;
     }
 
