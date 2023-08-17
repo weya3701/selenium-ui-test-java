@@ -39,7 +39,9 @@ public class TaskRunner {
             Method resultMethod = c.getMethod("getResult");
             Method statusMethod = c.getMethod("getTaskStatus");
             Method closeMethod = c.getMethod("closeWebdriver");
+            Method quitMethod = c.getMethod("quitWebdriver");
             closeMethod.invoke(wb);
+            quitMethod.invoke(wb);
             List<HashMap<String, String>> result = (List<HashMap<String, String>>) resultMethod.invoke(wb);
             String status = (String) statusMethod.invoke(wb);
             MarkdownDocument markdown = new MarkdownDocument();

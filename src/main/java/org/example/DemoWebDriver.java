@@ -422,6 +422,14 @@ public class DemoWebDriver extends BaseDriver implements WebAutomationTool {
         }
     }
 
+    public void quitWebdriver() {
+        try {
+            this.webDriver.quit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     static class WebDriverBuilder {
         public static WebDriver getWebDriver(String webDriverType, String executablePath, String[] browserOptions) {
             WebDriver driver;
