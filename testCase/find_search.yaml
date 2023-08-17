@@ -1,0 +1,61 @@
+job: "Selenium UI Test"
+description: "自動化測試測案、流程設定檔"
+testCaseDescription: "開啟首頁->使用站內搜尋"
+testCaseID: "TC0002"
+webdriverType: "Chrome"
+webdriverPath: "/Users/mirage/Documents/workspace/packages/chromedriver"
+screenshot: "Enable"
+picPath: "pic/"
+reportFilePath: "report/"
+reportFile: "FindAndSearch.md"
+options:
+  # - --headless
+  - --disable-gpu
+  - --window-size=1920,1080
+steps:
+  - elementName: ""
+    desc: "OpenYuantaWebPage"
+    interval: 1
+    url: "https://www.yuanta.com/"
+    by: ""
+    module: "open_website"
+  - module: "scroll_element_intoview"
+    desc: "捲動視窗"
+    interval: 1
+    url: ""
+    by: "xpath"
+    elementName: "/html/body/div[2]/section/div/div[2]/div[1]/div/div[2]/div/span[1]"
+  - module: "get_value_to_store"
+    desc: "取得數值"
+    interval: 1
+    by: "xpath"
+    elementName: "/html/body/div[2]/section/div/div[2]/div[1]/div/div[2]/div/span[1]"
+    storeKey: "search"
+  - module: "open_new_tab"
+    interval: 1
+  - module: "switch_tab"
+    interval: 1
+    tab: 1
+  - elementName: ""
+    desc: "OpenWebPage"
+    interval: 1
+    module: "open_website" 
+    url: "https://www.google.com/"
+    by: ""
+  - module: "find_element_and_sendkey_from_store"
+    elementName: '//*[@id="APjFqb"]'
+    desc: "填寫搜尋字"
+    interval: 1
+    by: "xpath"
+    storeKey: "search"
+    # key: "組織管理"
+  - module: "find_element_and_click"
+    elementName: '/html/body/div[1]/div[2]/div/img'
+    desc: "click"
+    interval: 1
+    by: "xpath"
+  - module: "find_element_and_click"
+    elementName: '/html/body/div[1]/div[3]/form/div[1]/div[1]/div[4]/center/input[1]'
+    desc: "開始搜尋"
+    interval: 5
+    by: "xpath"
