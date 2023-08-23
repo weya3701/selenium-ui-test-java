@@ -74,28 +74,13 @@ public class DemoWebDriver extends BaseDriver implements WebAutomationTool {
     }
 
     private By getElementBy(String elementName, String selector) {
-        By by = null;
-        switch (selector) {
-            case "xpath":
-                by = By.xpath(elementName);
-                break;
-            case "css":
-                by = By.cssSelector(elementName);
-                break;
-            case "link_text":
-                by = By.linkText(elementName);
-                break;
-            case "id":
-                by = By.id(elementName);
-                break;
-            case "tag_name":
-                by = By.name(elementName);
-                break;
-            default:
-                by = By.xpath(elementName);
-                break;
-        }
-        return by;
+        return switch (selector) {
+            case "css" -> By.cssSelector(elementName);
+            case "link_text" -> By.linkText(elementName);
+            case "id" -> By.id(elementName);
+            case "tag_name" -> By.name(elementName);
+            default -> By.xpath(elementName);
+        };
     }
 
     public String switch_tab(Step step) {
@@ -434,32 +419,31 @@ public class DemoWebDriver extends BaseDriver implements WebAutomationTool {
         public static WebDriver getWebDriver(String webDriverType, String executablePath, String[] browserOptions) {
             WebDriver driver;
             switch (webDriverType) {
-                case "Chrome":
+                case "Chrome" -> {
                     System.setProperty("webdriver.chrome.driver", executablePath);
                     ChromeOptions co = new ChromeOptions();
                     co.addArguments(browserOptions);
                     co.addArguments();
                     driver = new ChromeDriver(co);
-                    break;
-                case "Firefox":
-                    System.setProperty("webdriver.firefox.dirver", executablePath);
+                }
+                case "Firefox" -> {
+                    System.setProperty("webdriver.firefox.driver", executablePath);
                     FirefoxOptions fo = new FirefoxOptions();
                     fo.addArguments(browserOptions);
                     fo.addArguments();
                     driver = new FirefoxDriver(fo);
-                    break;
-                case "Edge":
-                    System.setProperty("webdriver.edge.dirver", executablePath);
+                }
+                case "Edge" -> {
+                    System.setProperty("webdriver.edge.driver", executablePath);
                     EdgeOptions eo = new EdgeOptions();
                     driver = new EdgeDriver(eo);
-                    break;
-                case "Safari":
-                    System.setProperty("webdriver.safari.dirver", executablePath);
+                }
+                case "Safari" -> {
+                    System.setProperty("webdriver.safari.driver", executablePath);
                     SafariOptions so = new SafariOptions();
                     driver = new SafariDriver(so);
-                    break;
-                default:
-                    driver = null;
+                }
+                default -> driver = null;
             }
             return driver;
         }
