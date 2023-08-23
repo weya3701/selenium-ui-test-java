@@ -3,13 +3,13 @@ description: "自動化測試測案、流程設定檔"
 testCaseDescription: "開啟首頁->使用站內搜尋"
 testCaseID: "TC0002"
 webdriverType: "Chrome"
-webdriverPath: "/Users/mirage/Desktop/chromedriver"
+webdriverPath: "/Users/mirage/Documents/workspace/packages/chromedriver"
 screenshot: "Enable"
 picPath: "pic/"
 reportFilePath: "report/"
 reportFile: "DemoTestCase.md"
 options:
-  - --headless
+  # - --headless
   - --disable-gpu
   - --window-size=1920,1080
 steps:
