@@ -1,9 +1,74 @@
 package org.example;
 
+import java.io.IOException;
+import java.util.Map;
+import org.example.plansType.*;
+import java.util.ArrayList;
+import java.util.List;
+
 public class Main {
-    public static void main(String[] args) {
-        TaskParser tp = new TaskParser(args[0]);
-        TestJob tj = tp.getTestJob();
+    public static void main(String[] args) throws IOException {
+        TestPlansAutomation tsa = new TestPlansAutomation("musasiyang", "UITest");
+        tsa.GetTestPlans("TestPlansUrl");
+        Map<String, Map<String, PlansTypeImp>> response = tsa.GetPlansObjectMap();
+        List<TestCasesThread> tct = new ArrayList<>();
+        for (String id: tsa.GetAllPlanIds()) {
+            Map<String, PlansTypeImp> r = response.get(id);
+            PlansTypeString planid = (PlansTypeString) r.get("TestPlanId");
+            PlansTypeString suiteid = (PlansTypeString) r.get("testSuiteId");
+
+            tct.add(new TestCasesThread(tsa, "TestCasesUrl", planid.getValue(), suiteid.getValue()));
+        }
+        for (TestCasesThread thread: tct) {
+            thread.run();
+        }
+        Map<String, Map<String, PlansTypeImp>> r = tsa.GetPlansObjectMap();
+        // PlansTypeObjectList testCases = (PlansTypeObjectList) r.get(args[0]).get("TestCases"); // FIXME. Need to Fixme.
+        PlansTypeObjectList testCases = (PlansTypeObjectList) r.get("64").get("TestCases"); // FIXME. Need to Fixme.
+        List<Map<String, PlansTypeImp>> rr = testCases.getValue();
+        for (Map<String, PlansTypeImp> ss: rr) {
+            PlansTypeString pointId = (PlansTypeString) ss.get("PointId");
+            System.out.println(pointId.getValue());
+        }
+        TestJob tj = new TestJob();
+        List<Step> steps = new ArrayList<>();
+        tj.job = "UITest";
+        tj.description = "展示Azure TestPlans平台管理測案";
+        tj.testCaseID = "66";
+        tj.testCaseDescription = "展示Azure TestPLans平台管理測案及測案步驟及參數";
+        tj.picPath = "pic/";
+        tj.reportFile = "AzrueTestPlansReport.md";
+        tj.reportFilePath = "report/";
+        tj.options = new String[]{"--disable-gpu", "--window-size=1920,1080"};
+        tj.webdriverType = "Chrome";
+        tj.webdriverPath = "/Users/mirage/Documents/workspace/packages/chromedriver";
+        for (Map<String, PlansTypeImp> testCase : testCases.getValue()) {
+            PlansTypeObjectList parameterList = (PlansTypeObjectList) testCase.get("StepParameter");
+            for (Map<String, PlansTypeImp> parameter : parameterList.getValue()) {
+                System.out.println(parameter);
+                Step step = new Step();
+                PlansTypeString interval = (PlansTypeString) parameter.getOrDefault("interval", new PlansTypeString(""));
+                PlansTypeString elementName = (PlansTypeString) parameter.getOrDefault("elementName", new PlansTypeString(""));
+                PlansTypeString desc = (PlansTypeString) parameter.getOrDefault("desc", new PlansTypeString(""));
+                PlansTypeString module = (PlansTypeString) parameter.getOrDefault("module", new PlansTypeString(""));
+                PlansTypeString url = (PlansTypeString) parameter.getOrDefault("url", new PlansTypeString(""));
+                PlansTypeString by = (PlansTypeString) parameter.getOrDefault("by", new PlansTypeString(""));
+                PlansTypeString key = (PlansTypeString) parameter.getOrDefault("key", new PlansTypeString(""));
+                step.interval = Integer.valueOf((String) interval.getValue());
+                step.elementName = elementName.getValue().replace("&amp;quot;", "\"");
+                step.desc = desc.getValue();
+                step.module = module.getValue();
+                step.url = url.getValue();
+                step.by = by.getValue();
+                step.key = key.getValue();
+                steps.add(step);
+            }
+        }
+        Step[] tpsteps = new Step[steps.size()];
+        for (int i=0; i < steps.size(); i++) {
+            tpsteps[i] = steps.get(i);
+        }
+        tj.steps = tpsteps;
         new TaskRunner(tj);
     }
 }
