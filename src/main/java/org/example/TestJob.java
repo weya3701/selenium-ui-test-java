@@ -1,7 +1,6 @@
 package org.example;
 
 import lombok.Data;
-import lombok.Getter;
 
 @Data
 public class TestJob {
