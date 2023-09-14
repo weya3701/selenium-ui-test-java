@@ -8,7 +8,8 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        TestPlansAutomation tsa = new TestPlansAutomation("musasiyang", "UITest");
+        TestPlansAutomation tsa = new TestPlansAutomation(args[0], args[1]);
+        // TestPlansAutomation tsa = new TestPlansAutomation("musasiyang", "UITest");
         tsa.GetTestPlans("TestPlansUrl");
         Map<String, Map<String, PlansTypeImp>> response = tsa.GetPlansObjectMap();
         List<TestCasesThread> tct = new ArrayList<>();
@@ -36,7 +37,6 @@ public class Main {
                 tj.job = "UITest";
                 tj.description = "Azure DevOps TestPlans自動化測試平台";
                 tj.testCaseID = testCaseId.getValue();
-                // tj.testCaseID = "66";
                 tj.testCaseDescription = "Azure DevOps TestPlans自動化測試";
                 tj.picPath = "pic/";
                 tj.reportFile = "AzrueTestPlansReport.md";
