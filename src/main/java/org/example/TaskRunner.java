@@ -20,7 +20,14 @@ public class TaskRunner {
             e.printStackTrace();
         }
     }
-    public TaskRunner(TestJob testJob) {
+    public TaskRunner(
+            TestJob testJob,
+            TestPlansAutomation tpa,
+            String runsName,
+            String planId,
+            String runsId,
+            int resultId
+            ) {
 
         Class c = DemoWebDriver.class;
         Constructor con = c.getDeclaredConstructors()[0];
@@ -64,7 +71,8 @@ public class TaskRunner {
             ReportWriter(
                     testJob.reportFilePath+testJob.reportFile,
                     markdown.getMarkdownContent());
-
+            // Update to Azure DevOps Test Plans platform.
+            tpa.UpdateRunsResult(runsId, 100000, "Completed", status, "");
         } catch (Exception ex) {
             ex.printStackTrace();
         }
