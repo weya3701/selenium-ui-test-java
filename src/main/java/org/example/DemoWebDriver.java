@@ -291,10 +291,8 @@ public class DemoWebDriver extends BaseDriver implements WebAutomationTool {
             boolean isEqual = element_value.equalsIgnoreCase(result);
             if (isEqual) {
                 rsp = this.successful;
-                System.out.println(this.successful);
             } else {
                 rsp = this.failed;
-                System.out.println(this.failed);
             }
         }
         return rsp;
@@ -363,16 +361,13 @@ public class DemoWebDriver extends BaseDriver implements WebAutomationTool {
         while (matcher.find()) {
             resultPattern.put(matcher.group(1), 0);
             total = total + 1;
-            System.out.println("matcher.group():\t"+matcher.group(1));
 
         }
 
         if (resultPattern.size() == total) {
-            System.out.println(this.successful);
             setTaskStepStatus(true);
         } else {
             rsp = this.failed;
-            System.out.println(this.failed);
             setTaskStepStatus(false);
         }
 

@@ -8,8 +8,8 @@ abstract class BaseDriver {
     HashMap<String, HashMap<String, String>> resultQueue;
     public List<HashMap<String, String>> stepsResult;
     boolean taskStepStatus = true;
-    String successful = "執行成功";
-    String failed = "執行失敗";
+    String successful = "Passed";
+    String failed = "Failed";
 
     BaseDriver() {
 
