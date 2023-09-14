@@ -8,8 +8,6 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-
-        // Get Test Cases from Azure DevOps TestPlans platform.
         TestPlansAutomation tsa = new TestPlansAutomation("musasiyang", "UITest");
         tsa.GetTestPlans("TestPlansUrl");
         Map<String, Map<String, PlansTypeImp>> response = tsa.GetPlansObjectMap();
@@ -25,15 +23,10 @@ public class Main {
             thread.run();
         }
 
-        // Run and update all of Test Ceases result.
         Map<String, Map<String, PlansTypeImp>> r = tsa.GetPlansObjectMap();
         for (String planId: tsa.GetAllPlanIds()) {
             PlansTypeObjectList testCases = (PlansTypeObjectList) r.get(planId.toString()).get("TestCases"); // FIXME. Need to Fixme.
             List<Map<String, PlansTypeImp>> rr = testCases.getValue();
-            // for (Map<String, PlansTypeImp> ss : rr) {
-            //     PlansTypeString pointId = (PlansTypeString) ss.get("PointId");
-            //     System.out.println(pointId.getValue());
-            // }
             for (Map<String, PlansTypeImp> testCase : testCases.getValue()) {
                 PlansTypeObjectList parameterList = (PlansTypeObjectList) testCase.get("StepParameter");
                 TestJob tj = new TestJob();
@@ -52,7 +45,6 @@ public class Main {
                 tj.webdriverType = "Chrome";
                 tj.webdriverPath = "/Users/mirage/Documents/workspace/packages/chromedriver";
                 for (Map<String, PlansTypeImp> parameter : parameterList.getValue()) {
-                    // System.out.println(parameter);
                     Step step = new Step();
                     PlansTypeString interval = (PlansTypeString) parameter.getOrDefault("interval", new PlansTypeString(""));
                     PlansTypeString elementName = (PlansTypeString) parameter.getOrDefault("elementName", new PlansTypeString(""));
@@ -77,7 +69,6 @@ public class Main {
                 tj.steps = tpsteps;
                 long timestamp = System.currentTimeMillis();
                 String timestampStr = Long.toString(timestamp);
-                // System.out.println(timestampStr);
                 int pointIdValue = Integer.parseInt(pointId.getValue());
                 PlansTypeString caseName = (PlansTypeString) testCase.get("TestCaseName");
                 String caseNameStr = caseName.getValue();

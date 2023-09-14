@@ -71,7 +71,6 @@ public class TaskRunner {
             ReportWriter(
                     testJob.reportFilePath+testJob.reportFile,
                     markdown.getMarkdownContent());
-            // Update to Azure DevOps Test Plans platform.
             tpa.UpdateRunsResult(runsId, 100000, "Completed", status, "");
         } catch (Exception ex) {
             ex.printStackTrace();
