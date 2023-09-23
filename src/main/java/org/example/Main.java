@@ -41,7 +41,7 @@ public class Main {
                 tj.picPath = "pic/";
                 tj.reportFile = "AzrueTestPlansReport.md";
                 tj.reportFilePath = "report/";
-                tj.options = new String[]{"--disable-gpu", "--window-size=1920,1080"};
+                tj.options = new String[]{"--disable-gpu", "--window-size=19200,10800"};
                 tj.webdriverType = "Chrome";
                 tj.webdriverPath = "/Users/mirage/Documents/workspace/packages/chromedriver";
                 for (Map<String, PlansTypeImp> parameter : parameterList.getValue()) {
@@ -54,7 +54,8 @@ public class Main {
                     PlansTypeString by = (PlansTypeString) parameter.getOrDefault("by", new PlansTypeString(""));
                     PlansTypeString key = (PlansTypeString) parameter.getOrDefault("key", new PlansTypeString(""));
                     step.interval = Integer.valueOf((String) interval.getValue());
-                    step.elementName = elementName.getValue().replace("&amp;quot;", "\"");
+                    step.elementName = elementName.getValue();
+                    // step.elementName = elementName.getValue().replace("&amp;quot;", "\"");
                     step.desc = desc.getValue();
                     step.module = module.getValue();
                     step.url = url.getValue();

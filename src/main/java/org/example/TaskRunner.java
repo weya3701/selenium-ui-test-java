@@ -29,6 +29,7 @@ public class TaskRunner {
             int resultId
             ) {
 
+        //-------------------------------------------------
         Class c = DemoWebDriver.class;
         Constructor con = c.getDeclaredConstructors()[0];
         String webdriver_status = "";
@@ -36,6 +37,9 @@ public class TaskRunner {
         try {
             Object wb = con.newInstance(testJob.getWebdriverType(), testJob.getWebdriverPath(), testJob.getOptions());
             for (Step step: Arrays.stream(testJob.steps).toList()) {
+                step.replaceSymbol();
+                // step.elementName = step.elementName.replace("&amp;lt;", "<");
+                // step.elementName = step.elementName.replace("&amp;gt;", ">");
                 Method taskMethod = c.getMethod(step.module, step.getClass());
                 webdriver_status = (String) taskMethod.invoke(wb, step);
                 Method saveMethod = c.getMethod("saveResult", String.class, String.class);
@@ -59,7 +63,7 @@ public class TaskRunner {
             markdown.setContent("* 瀏覽器類型:", testJob.webdriverType);
             markdown.setContent("\n");
             markdown.setContent("* * *");
-            markdown.setContent("### 測試止驟結果");
+            markdown.setContent("### 測試步驟結果");
             markdown.setContent("```");
 
             for (HashMap<String, String> r: result) {
