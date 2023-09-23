@@ -9,7 +9,6 @@ import java.util.List;
 public class Main {
     public static void main(String[] args) throws IOException {
         TestPlansAutomation tsa = new TestPlansAutomation(args[0], args[1]);
-        // TestPlansAutomation tsa = new TestPlansAutomation("musasiyang", "UITest");
         tsa.GetTestPlans("TestPlansUrl");
         Map<String, Map<String, PlansTypeImp>> response = tsa.GetPlansObjectMap();
         List<TestCasesThread> tct = new ArrayList<>();
@@ -55,7 +54,6 @@ public class Main {
                     PlansTypeString key = (PlansTypeString) parameter.getOrDefault("key", new PlansTypeString(""));
                     step.interval = Integer.valueOf((String) interval.getValue());
                     step.elementName = elementName.getValue();
-                    // step.elementName = elementName.getValue().replace("&amp;quot;", "\"");
                     step.desc = desc.getValue();
                     step.module = module.getValue();
                     step.url = url.getValue();

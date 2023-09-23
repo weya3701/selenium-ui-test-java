@@ -28,8 +28,6 @@ public class TaskRunner {
             String runsId,
             int resultId
             ) {
-
-        //-------------------------------------------------
         Class c = DemoWebDriver.class;
         Constructor con = c.getDeclaredConstructors()[0];
         String webdriver_status = "";
@@ -38,8 +36,6 @@ public class TaskRunner {
             Object wb = con.newInstance(testJob.getWebdriverType(), testJob.getWebdriverPath(), testJob.getOptions());
             for (Step step: Arrays.stream(testJob.steps).toList()) {
                 step.replaceSymbol();
-                // step.elementName = step.elementName.replace("&amp;lt;", "<");
-                // step.elementName = step.elementName.replace("&amp;gt;", ">");
                 Method taskMethod = c.getMethod(step.module, step.getClass());
                 webdriver_status = (String) taskMethod.invoke(wb, step);
                 Method saveMethod = c.getMethod("saveResult", String.class, String.class);
