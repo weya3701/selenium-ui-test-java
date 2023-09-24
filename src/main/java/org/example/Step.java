@@ -17,4 +17,10 @@ public class Step {
     String key;
     String fileName;
     String module;
+
+    public void replaceSymbol() {
+        this.elementName = this.elementName.replace("&amp;lt", "<");
+        this.elementName = this.elementName.replace("&amp;gt;", ">");
+        this.elementName = this.elementName.replace("&amp;quot;", "\"");
+    }
 }

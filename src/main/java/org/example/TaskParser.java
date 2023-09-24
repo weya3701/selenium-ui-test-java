@@ -1,9 +1,12 @@
 package org.example;
 import java.io.*;
+
+import lombok.Getter;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.representer.Representer;
 
+@Getter
 public class TaskParser {
   private TestJob testJob;
 
@@ -47,7 +50,4 @@ public class TaskParser {
     }
   }
 
-  public TestJob getTestJob() {
-    return this.testJob;
-  }
 }
