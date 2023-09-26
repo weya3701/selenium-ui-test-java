@@ -41,8 +41,8 @@ public class Main {
                 tj.reportFile = "AzrueTestPlansReport.md";
                 tj.reportFilePath = "report/";
                 tj.options = new String[]{"--disable-gpu", "--window-size=19200,10800"};
-                tj.webdriverType = "Chrome";
-                tj.webdriverPath = "/Users/mirage/Documents/workspace/packages/chromedriver";
+                tj.webdriverType = "Edge";
+                tj.webdriverPath = "/Users/mirage/Documents/workspace/packages/msedgedriver";
                 for (Map<String, PlansTypeImp> parameter : parameterList.getValue()) {
                     Step step = new Step();
                     PlansTypeString interval = (PlansTypeString) parameter.getOrDefault("interval", new PlansTypeString(""));

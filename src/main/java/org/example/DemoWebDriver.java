@@ -76,7 +76,7 @@ public class DemoWebDriver extends BaseDriver implements WebAutomationTool {
     private By getElementBy(String elementName, String selector) {
         return switch (selector) {
             case "css" -> By.cssSelector(elementName);
-            case "link_text" -> By.linkText(elementName);
+            case "linkText" -> By.linkText(elementName);
             case "id" -> By.id(elementName);
             case "tag_name" -> By.name(elementName);
             default -> By.xpath(elementName);
