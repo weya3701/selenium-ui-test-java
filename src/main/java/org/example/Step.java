@@ -17,6 +17,7 @@ public class Step {
     String key;
     String fileName;
     String module;
+    String tabName;
 
     public void replaceSymbol() {
         this.elementName = this.elementName.replace("&amp;lt", "<");

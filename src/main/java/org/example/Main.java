@@ -52,6 +52,7 @@ public class Main {
                     PlansTypeString url = (PlansTypeString) parameter.getOrDefault("url", new PlansTypeString(""));
                     PlansTypeString by = (PlansTypeString) parameter.getOrDefault("by", new PlansTypeString(""));
                     PlansTypeString key = (PlansTypeString) parameter.getOrDefault("key", new PlansTypeString(""));
+                    PlansTypeString tab = (PlansTypeString) parameter.getOrDefault("tab", new PlansTypeString("0"));
                     step.interval = Integer.valueOf((String) interval.getValue());
                     step.elementName = elementName.getValue();
                     step.desc = desc.getValue();
@@ -59,6 +60,7 @@ public class Main {
                     step.url = url.getValue();
                     step.by = by.getValue();
                     step.key = key.getValue();
+                    step.tab = Integer.valueOf(((PlansTypeString) tab).getValue());
                     steps.add(step);
                 }
                 Step[] tpsteps = new Step[steps.size()];

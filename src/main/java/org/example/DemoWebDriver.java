@@ -83,8 +83,14 @@ public class DemoWebDriver extends BaseDriver implements WebAutomationTool {
         };
     }
 
-    public String switch_tab(Step step) {
+    public String switch_tab_by_name(Step step) {
+        this.webDriver.switchTo().window(step.tabName);
+        setSecondsSleep(1);
+        return this.successful;
+    }
 
+    public String switch_tab(Step step) {
+        System.out.println("tab: "+step.tab);
         Set<String> wdtabs = new TreeSet<>();
         wdtabs = this.webDriver.getWindowHandles();
         this.webDriver.switchTo().window(
