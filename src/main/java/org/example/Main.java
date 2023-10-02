@@ -45,7 +45,7 @@ public class Main {
                 tj.webdriverPath = "/Users/mirage/Documents/workspace/packages/chromedriver";
                 for (Map<String, PlansTypeImp> parameter : parameterList.getValue()) {
                     Step step = new Step();
-                    PlansTypeString interval = (PlansTypeString) parameter.getOrDefault("interval", new PlansTypeString(""));
+                    PlansTypeString interval = (PlansTypeString) parameter.getOrDefault("interval", new PlansTypeString("1"));
                     PlansTypeString elementName = (PlansTypeString) parameter.getOrDefault("elementName", new PlansTypeString(""));
                     PlansTypeString desc = (PlansTypeString) parameter.getOrDefault("desc", new PlansTypeString(""));
                     PlansTypeString module = (PlansTypeString) parameter.getOrDefault("module", new PlansTypeString(""));

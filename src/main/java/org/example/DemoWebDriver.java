@@ -76,7 +76,7 @@ public class DemoWebDriver extends BaseDriver implements WebAutomationTool {
     private By getElementBy(String elementName, String selector) {
         return switch (selector) {
             case "css" -> By.cssSelector(elementName);
-            case "link_text" -> By.linkText(elementName);
+            case "linkText" -> By.linkText(elementName);
             case "id" -> By.id(elementName);
             case "tag_name" -> By.name(elementName);
             default -> By.xpath(elementName);
@@ -199,6 +199,22 @@ public class DemoWebDriver extends BaseDriver implements WebAutomationTool {
     }
 
     @Override
+    public String webdriver_run_script(Step step) {
+        String rsp = this.successful;
+        System.out.println(step.elementName);
+        try {
+            JavascriptExecutor executor = (JavascriptExecutor) this.webDriver;
+            executor.executeScript(step.elementName);
+            setTaskStepStatus(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+            rsp = this.failed;
+            setTaskStepStatus(false);
+        }
+        return rsp;
+    }
+
+    @Override
     public String scroll_element_intoview(Step step) {
         String rsp = this.successful;
         try {
@@ -299,6 +315,22 @@ public class DemoWebDriver extends BaseDriver implements WebAutomationTool {
     }
 
     @Override
+    public String set_windows_size(Step step) {
+        String rsp = this.successful;
+        try {
+            String element = step.elementName;
+            String x;
+            String y;
+            x = element.split("x")[0];
+            y = element.split("x")[1];
+            this.webDriver.manage().window().setSize(new Dimension(Integer.valueOf(x), Integer.valueOf(y)));
+        } catch (Exception e) {
+            rsp = this.failed;
+        }
+        return rsp;
+    }
+
+    @Override
     public String get_regex_value_to_store(Step step) {
         String rsp = this.successful;
         String store_key = step.storeKey;
@@ -367,6 +399,30 @@ public class DemoWebDriver extends BaseDriver implements WebAutomationTool {
         if (resultPattern.size() == total) {
             setTaskStepStatus(true);
         } else {
+            rsp = this.failed;
+            setTaskStepStatus(false);
+        }
+
+        return rsp;
+    }
+
+    @Override
+    public String find_element_and_click_with_wait(Step step) {
+        String rsp = this.successful;
+        By selectBy = getElementBy(step.elementName, step.by);
+        try {
+            this.actions.moveToElement(
+                    this.webDriver.findElement(
+                            selectBy
+                    )
+            ).build().perform();
+            Function<WebDriver, WebElement> condition = (WebDriver d) -> d.findElement(selectBy);
+            WebElement element = new WebDriverWait(this.webDriver, Duration.ofSeconds(30).toSeconds())
+                    .until(condition);
+            element.click();
+            setTaskStepStatus(true);
+        } catch (Exception e) {
+            e.printStackTrace();
             rsp = this.failed;
             setTaskStepStatus(false);
         }
