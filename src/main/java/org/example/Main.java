@@ -6,8 +6,16 @@ import org.example.plansType.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.github.cdimascio.dotenv.Dotenv;
+
 public class Main {
     public static void main(String[] args) throws IOException {
+
+        Dotenv dotenv = Dotenv.configure()
+                .filename("env")
+                .load();
+
+        dotenv.get("MY_ENV_VAR1");
 
         // 指定自動執行Test Plan ID
         TestPlansAutomation tsa = new TestPlansAutomation(args[0], args[1]);
@@ -39,16 +47,24 @@ public class Main {
                     List<Step> steps = new ArrayList<>();
                     PlansTypeString testCaseId = (PlansTypeString) testCase.get("TestCaseId");
                     PlansTypeString pointId = (PlansTypeString) testCase.get("PointId");
-                    tj.job = "UITest";
-                    tj.description = "Azure DevOps TestPlans自動化測試平台";
+                    // tj.job = "UITest";
+                    tj.job = dotenv.get("JOB_NAME");
+                    // tj.description = "Azure DevOps TestPlans自動化測試平台";
+                    tj.description = dotenv.get("DESCRIPTION");
                     tj.testCaseID = testCaseId.getValue();
-                    tj.testCaseDescription = "Azure DevOps TestPlans自動化測試";
-                    tj.picPath = "pic/";
-                    tj.reportFile = "AzrueTestPlansReport.md";
-                    tj.reportFilePath = "report/";
+                    tj.testCaseDescription = dotenv.get("TEST_CASE_DESCRIPTION");
+                    // tj.testCaseDescription = "Azure DevOps TestPlans自動化測試";
+                    tj.picPath = dotenv.get("PIC_PATH");
+                    // tj.picPath = "pic/";
+                    tj.reportFile = dotenv.get("REPORT_FILE");
+                    // tj.reportFile = "AzrueTestPlansReport.md";
+                    tj.reportFilePath = dotenv.get("REPORT_FILE_PATH");
+                    // tj.reportFilePath = "report/";
                     tj.options = new String[]{"--disable-gpu", "--window-size=19200,10800"};
-                    tj.webdriverType = "Chrome";
-                    tj.webdriverPath = "/Users/mirage/Documents/workspace/packages/chromedriver";
+                    tj.webdriverType = dotenv.get("WEBDRIVER_TYPE");
+                    // tj.webdriverType = "Chrome";
+                    tj.webdriverPath = dotenv.get("WEBDRIVER_PATH");
+                    // tj.webdriverPath = "/Users/mirage/Documents/workspace/packages/chromedriver";
                     for (Map<String, PlansTypeImp> parameter : parameterList.getValue()) {
                         Step step = new Step();
                         PlansTypeString interval = (PlansTypeString) parameter.getOrDefault("interval", new PlansTypeString("1"));
