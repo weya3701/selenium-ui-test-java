@@ -1,0 +1,8 @@
+JOB_NAME=UITest
+DESCRIPTION=Azure DevOps TestPlans自動化測試
+TEST_CASE_DESCRIPTION=Azure DevOps TestPlans自動化測試
+PIC_PATH=pic/
+REPORT_FILE=AzureTestPlansReport.md
+REPORT_FILE_PATH=report/
+WEBDRIVER_TYPE=Chrome
+WEBDRIVER_PATH=/Users/mirage/Documents/workspace/packages/chromedriver
