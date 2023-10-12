@@ -6,3 +6,4 @@ REPORT_FILE=AzureTestPlansReport.md
 REPORT_FILE_PATH=report/
 WEBDRIVER_TYPE=Chrome
 WEBDRIVER_PATH=/Users/mirage/Documents/workspace/packages/chromedriver
+AzureApisDomain=dev.azure.com
