@@ -17,8 +17,7 @@ public class Main {
 
         dotenv.get("MY_ENV_VAR1");
 
-        // 指定自動執行Test Plan ID
-        TestPlansAutomation tsa = new TestPlansAutomation(args[0], args[1]);
+        TestPlansAutomation tsa = new TestPlansAutomation(dotenv.get("AzureApisDomain"), args[0], args[1]);
         tsa.GetTestPlans("TestPlansUrl");
         Map<String, Map<String, PlansTypeImp>> response = tsa.GetPlansObjectMap();
         List<TestCasesThread> tct = new ArrayList<>();
@@ -28,14 +27,12 @@ public class Main {
                 PlansTypeString planid = (PlansTypeString) r.get("TestPlanId");
                 PlansTypeString suiteid = (PlansTypeString) r.get("testSuiteId");
                 tct.add(new TestCasesThread(tsa, "TestCasesUrl", id, suiteid.getValue()));
-                // tct.add(new TestCasesThread(tsa, "TestCasesUrl", planid.getValue(), suiteid.getValue()));
             }
         }
         for (TestCasesThread thread: tct) {
             thread.run();
         }
 
-        // 指定自動執行Test Plan ID所屬的TestCases及runs資料更新。
         Map<String, Map<String, PlansTypeImp>> r = tsa.GetPlansObjectMap();
         for (String planId: tsa.GetAllPlanIds()) {
             if (planId.equalsIgnoreCase(args[2])) {
@@ -47,24 +44,16 @@ public class Main {
                     List<Step> steps = new ArrayList<>();
                     PlansTypeString testCaseId = (PlansTypeString) testCase.get("TestCaseId");
                     PlansTypeString pointId = (PlansTypeString) testCase.get("PointId");
-                    // tj.job = "UITest";
                     tj.job = dotenv.get("JOB_NAME");
-                    // tj.description = "Azure DevOps TestPlans自動化測試平台";
                     tj.description = dotenv.get("DESCRIPTION");
                     tj.testCaseID = testCaseId.getValue();
                     tj.testCaseDescription = dotenv.get("TEST_CASE_DESCRIPTION");
-                    // tj.testCaseDescription = "Azure DevOps TestPlans自動化測試";
                     tj.picPath = dotenv.get("PIC_PATH");
-                    // tj.picPath = "pic/";
                     tj.reportFile = dotenv.get("REPORT_FILE");
-                    // tj.reportFile = "AzrueTestPlansReport.md";
                     tj.reportFilePath = dotenv.get("REPORT_FILE_PATH");
-                    // tj.reportFilePath = "report/";
                     tj.options = new String[]{"--disable-gpu", "--window-size=19200,10800"};
                     tj.webdriverType = dotenv.get("WEBDRIVER_TYPE");
-                    // tj.webdriverType = "Chrome";
                     tj.webdriverPath = dotenv.get("WEBDRIVER_PATH");
-                    // tj.webdriverPath = "/Users/mirage/Documents/workspace/packages/chromedriver";
                     for (Map<String, PlansTypeImp> parameter : parameterList.getValue()) {
                         Step step = new Step();
                         PlansTypeString interval = (PlansTypeString) parameter.getOrDefault("interval", new PlansTypeString("1"));
