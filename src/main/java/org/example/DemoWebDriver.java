@@ -78,13 +78,20 @@ public class DemoWebDriver extends BaseDriver implements WebAutomationTool {
             case "css" -> By.cssSelector(elementName);
             case "linkText" -> By.linkText(elementName);
             case "id" -> By.id(elementName);
-            case "tag_name" -> By.name(elementName);
+            case "name" -> By.name(elementName);
+            // case "tag_name" -> By.name(elementName);
             default -> By.xpath(elementName);
         };
     }
 
-    public String switch_tab(Step step) {
+    public String switch_tab_by_name(Step step) {
+        this.webDriver.switchTo().window(step.tabName);
+        setSecondsSleep(1);
+        return this.successful;
+    }
 
+    public String switch_tab(Step step) {
+        System.out.println("tab: "+step.tab);
         Set<String> wdtabs = new TreeSet<>();
         wdtabs = this.webDriver.getWindowHandles();
         this.webDriver.switchTo().window(

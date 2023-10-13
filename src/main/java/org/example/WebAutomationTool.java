@@ -8,6 +8,8 @@ public interface WebAutomationTool {
 
   public String switch_tab(Step step);
 
+  public String switch_tab_by_name(Step step);
+
   public String open_new_tab(Step step);
 
   public String find_element_and_click_without_wait(Step step);
