@@ -78,7 +78,8 @@ public class DemoWebDriver extends BaseDriver implements WebAutomationTool {
             case "css" -> By.cssSelector(elementName);
             case "linkText" -> By.linkText(elementName);
             case "id" -> By.id(elementName);
-            case "tag_name" -> By.name(elementName);
+            case "name" -> By.name(elementName);
+            // case "tag_name" -> By.name(elementName);
             default -> By.xpath(elementName);
         };
     }
