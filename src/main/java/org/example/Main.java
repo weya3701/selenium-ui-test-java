@@ -11,11 +11,7 @@ import io.github.cdimascio.dotenv.Dotenv;
 public class Main {
     public static void main(String[] args) throws IOException {
 
-        Dotenv dotenv = Dotenv.configure()
-                .filename("env")
-                .load();
-
-        dotenv.get("MY_ENV_VAR1");
+        Dotenv dotenv = Dotenv.configure().filename("env").load();
 
         TestPlansAutomation tsa = new TestPlansAutomation(dotenv.get("AzureApisDomain"), args[0], args[1]);
         tsa.GetTestPlans("TestPlansUrl");
