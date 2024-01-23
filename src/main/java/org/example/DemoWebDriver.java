@@ -65,12 +65,8 @@ public class DemoWebDriver extends BaseDriver implements WebAutomationTool {
         screenshotFile.renameTo(destinationPath.toFile());
     }
 
-    private void setSecondsSleep(int n) {
-        try {
-            TimeUnit.SECONDS.sleep(n);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+    private void setSecondsSleep(int n) throws InterruptedException {
+        TimeUnit.SECONDS.sleep(n);
     }
 
     private By getElementBy(String elementName, String selector) {
@@ -85,8 +81,36 @@ public class DemoWebDriver extends BaseDriver implements WebAutomationTool {
 
     public String switch_tab_by_name(Step step) {
         this.webDriver.switchTo().window(step.tabName);
-        setSecondsSleep(1);
+        try {
+            setSecondsSleep(1);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         return this.successful;
+    }
+
+    @Override
+    public String set_shadow_root(Step step) {
+        String rsp = this.successful;
+        try {
+            String script = String.format(
+                    """
+                    sd = document.getElementsByTagName('%s')[0].shadowRoot;
+                    """, step.elementName
+            );
+            script.replaceAll("'", "\"");
+            script.replaceAll("\"", "'");
+            JavascriptExecutor executor = (JavascriptExecutor) this.webDriver;
+            executor.executeScript(script);
+            setTaskStepStatus(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+            rsp = this.failed;
+            setTaskStepStatus(false);
+        }
+
+        return rsp;
+
     }
 
     public String switch_tab(Step step) {
@@ -104,7 +128,11 @@ public class DemoWebDriver extends BaseDriver implements WebAutomationTool {
     public String open_website(Step step) {
 
         this.webDriver.get(step.url);
-        setSecondsSleep(step.interval);
+        try {
+            setSecondsSleep(step.interval);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         setTaskStepStatus(true);
         return this.successful;
     }
@@ -113,9 +141,61 @@ public class DemoWebDriver extends BaseDriver implements WebAutomationTool {
 
         JavascriptExecutor executor = (JavascriptExecutor) this.webDriver;
         executor.executeScript("window.open('');");
-        setSecondsSleep(step.interval);
+        try {
+            setSecondsSleep(step.interval);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         setTaskStepStatus(true);
         return this.successful;
+    }
+
+    @Override
+    public String find_shadow_root_element_and_click(Step step) {
+
+        String rsp = this.successful;
+        try {
+            String script = String.format(
+                    """
+                    sd.querySelector('%s').click()
+                    """, step.elementName
+            );
+            script.replaceAll("'", "\"");
+            script.replaceAll("\"", "'");
+            JavascriptExecutor executor = (JavascriptExecutor) this.webDriver;
+            executor.executeScript(script);
+            setTaskStepStatus(true);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            rsp = this.failed;
+            setTaskStepStatus(false);
+        }
+        return rsp;
+    }
+
+    @Override
+    public String find_shadow_root_element_and_sendkey(Step step) {
+        String rsp = this.successful;
+        try {
+            String script = String.format(
+                    """
+                    sd.querySelector('%s').value='%s';
+                    var event = new Event('input', {'bubbles': true});
+                    sd.querySelector('%s').dispatchEvent(event);
+                    """, step.elementName, step.key
+            );
+            script.replaceAll("'", "\"");
+            script.replaceAll("\"", "'");
+            JavascriptExecutor executor = (JavascriptExecutor) this.webDriver;
+            executor.executeScript(script);
+            setTaskStepStatus(true);
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            rsp = this.failed;
+            setTaskStepStatus(false);
+        }
+        return rsp;
     }
 
     @Override
@@ -125,8 +205,9 @@ public class DemoWebDriver extends BaseDriver implements WebAutomationTool {
         try {
             By by = getElementBy(step.elementName, step.by);
             Function<WebDriver, WebElement> condition = (WebDriver d) -> d.findElement(by);
-            WebElement element = new WebDriverWait(this.webDriver, Duration.ofSeconds(30).toSeconds())
-                    .until(condition);
+            WebElement element = new WebDriverWait(
+                    this.webDriver, Duration.ofSeconds(30).toSeconds()
+            ).until(condition);
             element.click();
             setSecondsSleep(step.interval);
             setTaskStepStatus(true);
@@ -161,8 +242,9 @@ public class DemoWebDriver extends BaseDriver implements WebAutomationTool {
             // Do find_element_and_sendkey
             By by = getElementBy(step.elementName, step.by);
             Function<WebDriver, WebElement> condition = (WebDriver d) -> d.findElement(by);
-            WebElement element = new WebDriverWait(this.webDriver, Duration.ofSeconds(30).toSeconds())
-                    .until(condition);
+            WebElement element = new WebDriverWait(
+                    this.webDriver, Duration.ofSeconds(30).toSeconds()
+            ).until(condition);
             element.sendKeys(step.key);
             setSecondsSleep(step.interval);
             setTaskStepStatus(true);

@@ -40,4 +40,9 @@ public interface WebAutomationTool {
 
   public String webdriver_run_script(Step step);
 
+  public String find_shadow_root_element_and_click(Step step);
+
+  public String set_shadow_root(Step step);
+
+  public String find_shadow_root_element_and_sendkey(Step step);
 }

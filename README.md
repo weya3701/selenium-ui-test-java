@@ -90,7 +90,14 @@
     * 參數說明：
         * iFrame名稱
 
-*
+* set\_shadow\_root: 設定shadowRoot節點
+    * 使用參數： elementName
+
+* find_shadow_root_element_and_click
+    * 使用參數： elementName
+
+* find_shadow_root_element_and_sendkey
+    * 使用參數： elementName, key
 
 ### 注意事項：
 
