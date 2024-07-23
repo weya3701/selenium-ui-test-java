@@ -1,4 +1,4 @@
-<project xmlns:ivy="antlib:org.apache.ivy.ant" name="SeleniumProject" default="main" basedir=".">
+<project xmlns:ivy="antlib:org.apache.ivy.ant" name="SeleniumTest" default="main" basedir=".">
 	<description>
 		Create a Java Project (JAR) with Ant build script
 	</description>

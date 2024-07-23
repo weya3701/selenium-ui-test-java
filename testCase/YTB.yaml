@@ -1,0 +1,47 @@
+job: "Selenium UI Test"
+description: "鑽金系統-登入測案"
+testCaseDescription: "鑽金系統-登入測案"
+testCaseID: "TC0002"
+webdriverType: "Edge"
+webdriverPath: "/Users/mirage/Documents/workspace/packages/msedgedriver"
+screenshot: "Enable"
+picPath: "pic/"
+reportFilePath: "report/"
+reportFile: "YTBTestCase.md"
+options:
+  # - --headless
+  - --disable-gpu
+  - --window-size=1920,1080
+steps:
+  - elementName: ""
+    desc: "開啟鑽金網頁"
+    interval: 1
+    module: "open_website" 
+    url: "https://pbankinginyyoursuperappuat.yuantabank.com.tw/wcs/pmb/pmb-host-entry/home/index.html"
+    by: ""
+  - elementName: "<ShadowRoot_elementName>web-app-pmb-mini-mhm"
+    desc: "設定ShadowRoot節點"
+    interval: 1
+    module: "set_shadow_root"
+  - elementName: "<Loging_button_elementName>"
+    desc: "點選 登入/註冊"
+    interval: 1
+    module: "find_shadow_root_element_and_click"
+  - elementName: "<id_number_elementName>"
+    desc: "輸入身分證字號"
+    interval: 1
+    module: "find_shadow_root_element_and_sendkey"
+    key: "<ID_number>"
+  - elementName: "<user_id_elementName>"
+    desc: "輸入使用者代號"
+    interval: 1
+    module: "find_shadow_root_element_and_sendkey"
+    key: "<user_id>"
+  - elementName: "<password_elementName>"
+    desc: "輸入網銀密碼"
+    interval: 1
+    module: "find_shadow_root_element_and_sendkey"
+    key: "<password>"
+  - elementName: "<login_elementName>"
+    interval: 1
+    module: "find_shadow_root_element_and_click"

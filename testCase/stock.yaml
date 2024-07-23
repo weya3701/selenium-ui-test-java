@@ -1,0 +1,37 @@
+job: "Selenium UI Test"
+description: "公開資訊觀測站"
+testCaseDescription: "公開資訊觀測站"
+testCaseID: "TC0002"
+webdriverType: "Edge"
+webdriverPath: "/Users/mirage/Documents/workspace/packages/msedgedriver"
+screenshot: "Enable"
+picPath: "pic/"
+reportFilePath: "report/"
+reportFile: "DemoTestCase.md"
+options:
+  # - --headless
+  - --disable-gpu
+  - --window-size=1920,1080
+steps:
+  - elementName: ""
+    desc: "OpenWebPage"
+    interval: 1
+    module: "open_website" 
+    url: "https://mops.twse.com.tw/mops/web/index"
+    by: ""
+  - module: "find_element_and_click"
+    desc: "click input field"
+    interval: 1
+    elementName: "#img_left > a > img"
+    by: "css"
+    #   - module: "find_element_and_sendkey"
+    #     elementName: '/html/body/center/table/tbody/tr/td/div[4]/table/tbody/tr/td/div/table/tbody/tr/td[3]/div/div[3]/form/table/tbody/tr/td[2]/table/tbody/tr/td[5]/div/div/input'
+    #     desc: "填寫搜尋字"
+    #     interval: 1
+    #     by: "xpath"
+    #     key: "2883"
+    #   - module: "find_element_and_click"
+    #     elementName: '/html/body/center/table/tbody/tr/td/div[4]/table/tbody/tr/td/div/table/tbody/tr/td[3]/div/div[3]/form/table/tbody/tr/td[4]/table/tbody/tr/td[2]/div/div/input'
+    #     desc: "click"
+    #     interval: 10
+    #     by: "xpath"

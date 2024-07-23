@@ -52,7 +52,7 @@ public class TaskRunner {
             markdown.setContent("* 瀏覽器類型:", testJob.webdriverType);
             markdown.setContent("\n");
             markdown.setContent("* * *");
-            markdown.setContent("### 測試止驟結果");
+            markdown.setContent("### 測試步驟結果");
             markdown.setContent("```");
 
             for (HashMap<String, String> r: result) {

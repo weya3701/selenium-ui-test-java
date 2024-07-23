@@ -17,4 +17,5 @@ public class Step {
     String key;
     String fileName;
     String module;
+    String tabName;
 }
